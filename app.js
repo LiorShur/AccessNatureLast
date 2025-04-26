@@ -466,6 +466,18 @@ window.onload = function () {
   }
 };
 async function exportRouteSummary() {
+  if (!routeData || routeData.length === 0) {
+  alert("No route data available to export. Please start tracking first.");
+  return;
+}
+
+let hasLocation = routeData.some(entry => entry.type === "location");
+
+if (!hasLocation) {
+  alert("No location data found. Start a route and record some movement first!");
+  return;
+}
+
   const zip = new JSZip();
   const notesFolder = zip.folder("notes");
   const imagesFolder = zip.folder("images");
