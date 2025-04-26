@@ -286,6 +286,13 @@ window.showMediaFullScreen = function (content, type) {
 window.saveSession = function () {
   const name = prompt("Enter a name for this route:");
   if (!name) return;
+  const session = {
+    name, // "Morning Walk"
+    date: new Date().toISOString(),
+    time: document.getElementById("timer").textContent,
+    distance: totalDistance.toFixed(2),
+    data: routeData
+  };
 
   const sessions = JSON.parse(localStorage.getItem("sessions") || "[]");
 
