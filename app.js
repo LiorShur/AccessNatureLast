@@ -658,10 +658,13 @@ L.marker([${entry.coords.lat}, ${entry.coords.lng}])
         audioCounter++;
       }
     }
-if (!pathCoords.length) {
+    
+if (pathCoords.length) {
+  // ✅ all map generation code here
+} else {
   console.warn(`Session "${session.name}" has no GPS points. Skipping.`);
-  continue; // Skip this session
 }
+    
     const sessionHTML = `
 <!DOCTYPE html>
 <html lang="en">
