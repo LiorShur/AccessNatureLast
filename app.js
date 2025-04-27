@@ -639,6 +639,7 @@ window.onload = function () {
         }
       } else {
         localStorage.removeItem("route_backup");
+        resetApp();
       }
     }
     loadSavedSessions(); // Always load saved sessions list
