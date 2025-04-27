@@ -432,14 +432,18 @@ window.saveSession = function () {
     data: routeData
   };
 
-  const sessions = JSON.parse(localStorage.getItem("sessions") || "[]");
+  let sessions = JSON.parse(localStorage.getItem("sessions") || "[]");
   sessions.push(session);
-  localStorage.setItem("sessions", JSON.stringify(sessions));
+
+  localStorage.setItem("sessions", JSON.stringify(sessions)); // ✅ Save sessions
+
+  localStorage.removeItem("route_backup"); // ✅ Clear any old backup after successful save!
 
   alert("✅ Route saved successfully!");
-  resetApp();
+
   loadSavedSessions(); // Refresh saved sessions list
 };
+
 
 
 // === LOAD SESSION LIST ===
