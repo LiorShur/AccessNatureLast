@@ -51,12 +51,12 @@ body {
 }
 
 /* .button-row:nth-child(1) { background-color: #e3f2fd; } /* Light Blue */
-.button-row:nth-child(2) { background-color: #fff3e0; } /* Light Orange */
-.button-row:nth-child(3) { background-color: #e8f5e9; } /* Light Green */
-.button-row:nth-child(4) { background-color: #fce4ec; } /* Light Pink */
-.button-row:nth-child(5) { background-color: #f3e5f5; } /* Light Purple */
-.button-row:nth-child(6) { background-color: #fbe9e7; } /* Light Coral */
- */
+/* .button-row:nth-child(2) { background-color: #fff3e0; } /* Light Orange */ */
+/* .button-row:nth-child(3) { background-color: #e8f5e9; } /* Light Green */ */
+/* .button-row:nth-child(4) { background-color: #fce4ec; } /* Light Pink */ */
+/* .button-row:nth-child(5) { background-color: #f3e5f5; } /* Light Purple */ */
+/* .button-row:nth-child(6) { background-color: #fbe9e7; } /* Light Coral */ */
+
 .button-row button {
   flex: 1 1 auto; /* ✅ Let buttons shrink a bit if needed */
   min-width: 80px; /* ✅ Minimum width for touch comfort */
