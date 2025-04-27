@@ -982,4 +982,22 @@ function showFullScreen(img) {
   a.download = `nature-explorer-${Date.now()}.zip`;
   a.click();
 }
+function openHistory() {
+  const list = document.getElementById("historyList");
+  list.innerHTML = "";
+  const sessions = JSON.parse(localStorage.getItem("sessions") || "[]");
+
+  sessions.forEach((session, index) => {
+    const li = document.createElement("li");
+    li.innerHTML = `<b>${session.name}</b> (${session.distance} km, ${session.time}) 
+    <button onclick="loadSession(${index})">View</button>`;
+    list.appendChild(li);
+  });
+
+  document.getElementById("historyPanel").style.display = "block";
+}
+
+function closeHistory() {
+  document.getElementById("historyPanel").style.display = "none";
+}
 
