@@ -421,7 +421,7 @@ window.saveSession = function () {
   localStorage.setItem("sessions", JSON.stringify(sessions));
 
   alert("✅ Route saved successfully!");
-  
+  resetApp();
   loadSavedSessions(); // Refresh saved sessions list
 };
 
