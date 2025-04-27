@@ -172,6 +172,29 @@ window.togglePause = function () {
   }
 };
 
+function resetApp() {
+  routeData = [];
+  path = [];
+  lastCoords = null;
+  totalDistance = 0;
+  startTime = null;
+  isPaused = false;
+
+  document.getElementById("distance").textContent = "0.00 km";
+  document.getElementById("timer").textContent = "00:00:00";
+
+  if (map && marker) {
+    marker.setPosition({ lat: 0, lng: 0 });
+    map.setCenter({ lat: 0, lng: 0 });
+    map.setZoom(15);
+  }
+
+  stopAutoBackup();
+  localStorage.removeItem("route_backup");
+
+  console.log("🧹 App reset — ready for a new session!");
+}
+
 // === TIMER ===
 function startTimer() {
   startTime = Date.now() - elapsedTime;
