@@ -77,6 +77,12 @@ function stopAutoBackup() {
   localStorage.removeItem("route_backup");
   console.log("✅ Auto-backup stopped and cleared.");
 }
+function showSummary() {
+  alert(`🏁 Route Completed!
+Total Distance: ${totalDistance.toFixed(2)} km
+Total Time: ${document.getElementById("timer").textContent}`);
+}
+
 
 // === TRACKING ===
 window.startTracking = function () {
@@ -137,7 +143,8 @@ window.stopTracking = function () {
 
   if (watchId) navigator.geolocation.clearWatch(watchId);
   stopTimer();
-  //showSummary();
+  showSummary();
+  resetApp(); // reset after showing summary
 };
 
 window.togglePause = function () {
