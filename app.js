@@ -106,6 +106,8 @@ window.startTracking = function () {
             const dist = haversineDistance(lastCoords, latLng);
             totalDistance += dist;
             document.getElementById("distance").textContent = totalDistance.toFixed(2) + " km";
+            document.getElementById("liveDistance").textContent = totalDistance.toFixed(2) + " km";
+
           }
 
           lastCoords = latLng;
