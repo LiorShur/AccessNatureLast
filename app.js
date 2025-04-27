@@ -1,3 +1,35 @@
+window.onload = function () {
+  // Check if backup exists
+  const backup = localStorage.getItem("route_backup");
+  if (backup) {
+    const restore = confirm("🛠️ Unsaved route found! Would you like to restore your previous tracking?");
+    if (restore) {
+      routeData = JSON.parse(backup);
+      alert("✅ Route recovered successfully! Continue tracking or export it.");
+      // Optionally show recovered path on map immediately:
+      if (typeof initRecoveredRoute === "function") {
+        initRecoveredRoute();
+      }
+    } else {
+      localStorage.removeItem("route_backup"); // user declined
+    }
+  }
+};
+function initRecoveredRoute() {
+  path = routeData.filter(e => e.type === "location").map(e => e.coords);
+  if (path.length > 0) {
+    map.setCenter(path[0]);
+    new google.maps.Polyline({
+      path,
+      geodesic: true,
+      strokeColor: "#00FF00",
+      strokeOpacity: 1.0,
+      strokeWeight: 2,
+      map: map
+    });
+  }
+}
+
 // === GLOBAL VARIABLES ===
 let map, marker, watchId;
 let path = [];
@@ -29,9 +61,27 @@ window.initMap = function (callback) {
 
   if (callback) callback();
 };
+let autoSaveInterval = null;
+
+function startAutoBackup() {
+  autoSaveInterval = setInterval(() => {
+    if (routeData.length > 0) {
+      localStorage.setItem("route_backup", JSON.stringify(routeData));
+      console.log("🔄 Auto-saved route progress.");
+    }
+  }, 20000); // 20 seconds
+}
+
+function stopAutoBackup() {
+  clearInterval(autoSaveInterval);
+  localStorage.removeItem("route_backup");
+  console.log("✅ Auto-backup stopped and cleared.");
+}
 
 // === TRACKING ===
 window.startTracking = function () {
+  startAutoBackup(); // start auto-saving every 20s
+
   if (navigator.geolocation) {
     watchId = navigator.geolocation.watchPosition(
       position => {
@@ -83,6 +133,8 @@ window.startTracking = function () {
 };
 
 window.stopTracking = function () {
+  stopAutoBackup(); // stop and clean backup
+
   if (watchId) navigator.geolocation.clearWatch(watchId);
   stopTimer();
   showSummary();
