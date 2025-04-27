@@ -660,11 +660,7 @@ L.marker([${entry.coords.lat}, ${entry.coords.lng}])
     }
     
 if (pathCoords.length) {
-  // ✅ all map generation code here
-} else {
-  console.warn(`Session "${session.name}" has no GPS points. Skipping.`);
-}
-    
+  // ✅ all map generation code here    
     const sessionHTML = `
 <!DOCTYPE html>
 <html lang="en">
@@ -739,6 +735,9 @@ function showFullScreen(img) {
       date: session.date,
       folder: folderName
     });
+  } else {
+  console.warn(`Session "${session.name}" has no GPS points. Skipping.`);
+}
   }
 
   // Create explorer.html
