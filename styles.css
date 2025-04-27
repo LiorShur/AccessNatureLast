@@ -47,7 +47,7 @@ body {
   padding: 2px;
   border-radius: 8px;
   overflow-x: auto; /* ✅ allow horizontal scroll if absolutely necessary */
-  background-color: #fbe9e7;
+/*   background-color: #fbe9e7; */
 }
 
 /* .button-row:nth-child(1) { background-color: #e3f2fd; } /* Light Blue */
