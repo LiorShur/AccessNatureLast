@@ -177,6 +177,7 @@ function resetApp() {
   path = [];
   lastCoords = null;
   totalDistance = 0;
+  elapsedTime = 0;
   startTime = null;
   isPaused = false;
 
