@@ -649,7 +649,7 @@ L.marker([${entry.coords.lat}, ${entry.coords.lng}])
         photoCounter++;
       } else if (entry.type === "audio") {
         const base64Data = entry.content.split(",")[1];
-        audioFolder.file(`audio${audioCounter}.webm`, base64Data, { base64: true });
+        audioFolder.file(`audio/audio${audioCounter}.webm`, base64Data, { base64: true });
         markersJS += `
 L.marker([${entry.coords.lat}, ${entry.coords.lng}])
   .addTo(map)
@@ -658,9 +658,14 @@ L.marker([${entry.coords.lat}, ${entry.coords.lng}])
         audioCounter++;
       }
     }
-    
-if (pathCoords.length) {
-  // ✅ all map generation code here    
+
+    // ✅ SKIP if no GPS points
+    if (pathCoords.length === 0) {
+      console.warn(`⚠️ Session "${session.name}" has no GPS points. Skipping export.`);
+      continue;
+    }
+
+    // ✅ Generate the session's index.html
     const sessionHTML = `
 <!DOCTYPE html>
 <html lang="en">
@@ -735,12 +740,9 @@ function showFullScreen(img) {
       date: session.date,
       folder: folderName
     });
-  } else {
-  console.warn(`Session "${session.name}" has no GPS points. Skipping.`);
-}
   }
 
-  // Create explorer.html
+  // ✅ Build final explorer.html
   let explorerHTML = `
 <!DOCTYPE html>
 <html lang="en">
@@ -795,7 +797,7 @@ function showFullScreen(img) {
 
   zip.file("explorer.html", explorerHTML);
 
-  // Download the final zip
+  // ✅ Finally, generate and download ZIP
   const blob = await zip.generateAsync({ type: "blob" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
@@ -803,3 +805,4 @@ function showFullScreen(img) {
   a.download = `nature-explorer-${Date.now()}.zip`;
   a.click();
 }
+
