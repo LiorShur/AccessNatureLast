@@ -137,7 +137,7 @@ window.stopTracking = function () {
 
   if (watchId) navigator.geolocation.clearWatch(watchId);
   stopTimer();
-  showSummary();
+  //showSummary();
 };
 
 window.togglePause = function () {
