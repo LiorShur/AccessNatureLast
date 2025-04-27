@@ -220,6 +220,7 @@ function updateTimerDisplay() {
   const mins = Math.floor((elapsedTime % (1000 * 60 * 60)) / (1000 * 60));
   const secs = Math.floor((elapsedTime % (1000 * 60)) / 1000);
   document.getElementById("timer").textContent = `${pad(hrs)}:${pad(mins)}:${pad(secs)}`;
+  document.getElementById("liveTimer").textContent = formatted;
 }
 
 function pad(n) {
