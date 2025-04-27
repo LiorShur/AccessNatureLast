@@ -496,11 +496,6 @@ if (!hasLocation) {
   let photoCounter = 1;
   let audioCounter = 1;
 
-  if (!pathCoords.length) {
-  console.warn(`Session "${session.name}" has no GPS points. Skipping.`);
-  continue; // Skip this session
-}
-
   for (const entry of routeData) {
     if (entry.type === "location") {
       pathCoords.push([entry.coords.lat, entry.coords.lng]);
@@ -663,7 +658,10 @@ L.marker([${entry.coords.lat}, ${entry.coords.lng}])
         audioCounter++;
       }
     }
-
+if (!pathCoords.length) {
+  console.warn(`Session "${session.name}" has no GPS points. Skipping.`);
+  continue; // Skip this session
+}
     const sessionHTML = `
 <!DOCTYPE html>
 <html lang="en">
