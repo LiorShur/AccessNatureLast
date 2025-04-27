@@ -197,8 +197,14 @@ function resetApp() {
 }
 
 // === TIMER ===
+// function startTimer() {
+//   startTime = Date.now() - elapsedTime;
+//   timerInterval = setInterval(updateTimerDisplay, 1000);
+// }
 function startTimer() {
-  startTime = Date.now() - elapsedTime;
+  elapsedTime = 0; // important
+  startTime = Date.now();
+  clearInterval(timerInterval);
   timerInterval = setInterval(updateTimerDisplay, 1000);
 }
 
@@ -405,6 +411,15 @@ window.showMediaFullScreen = function (content, type) {
 //   alert("Route saved!");
 //   loadSavedSessions();
 // };
+
+window.addEventListener("beforeunload", function (e) {
+  if (routeData.length > 0) {
+    e.preventDefault();
+    e.returnValue = '';
+    return '';
+  }
+});
+
 window.saveSession = function () {
   const name = prompt("Enter a name for this route:");
   if (!name) return;
