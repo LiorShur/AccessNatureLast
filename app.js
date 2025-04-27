@@ -207,6 +207,7 @@ function startTimer() {
   elapsedTime = 0; // important
   startTime = Date.now();
   clearInterval(timerInterval);
+  updateTimerDisplay();
   timerInterval = setInterval(updateTimerDisplay, 1000);
 }
 
