@@ -71,9 +71,9 @@ body {
   transition: background-color 0.3s ease;
 }
 
-.button-row button:hover {
+/* .button-row button:hover {
   background-color: #45a049;
-}
+} */
 
 button {
   background-color: #4CAF50;
@@ -87,10 +87,10 @@ button {
   transition: background-color 0.3s ease;
 }
 
-button:hover {
+/* button:hover {
   background-color: #45a049;
 }
-
+ */
 .green { background: #4caf50; }
 .green button { background: #388e3c; }
 
