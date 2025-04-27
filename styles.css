@@ -163,6 +163,19 @@ button {
   max-height: 60%;
   overflow-y: auto;
 }
+body.dark-mode {
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
+body.dark-mode .button-row {
+  background-color: #1f1f1f;
+}
+
+body.dark-mode button {
+  background-color: #333;
+  color: white;
+}
 
 
 @media (max-width: 600px) {
