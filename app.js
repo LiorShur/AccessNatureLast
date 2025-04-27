@@ -1000,4 +1000,7 @@ function openHistory() {
 function closeHistory() {
   document.getElementById("historyPanel").style.display = "none";
 }
+function toggleDarkMode() {
+  document.body.classList.toggle("dark-mode");
+}
 
