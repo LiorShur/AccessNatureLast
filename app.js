@@ -186,6 +186,9 @@ function resetApp() {
   document.getElementById("distance").textContent = "0.00 km";
   document.getElementById("timer").textContent = "00:00:00";
 
+  document.getElementById("liveDistance").textContent = "0.00 km"; // ✅ reset floating distance
+  document.getElementById("liveTimer").textContent = "00:00:00";   // ✅ reset floating timer
+
   if (map && marker) {
     marker.setPosition({ lat: 0, lng: 0 });
     map.setCenter({ lat: 0, lng: 0 });
