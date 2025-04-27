@@ -222,9 +222,13 @@ function updateTimerDisplay() {
   const hrs = Math.floor(elapsedTime / (1000 * 60 * 60));
   const mins = Math.floor((elapsedTime % (1000 * 60 * 60)) / (1000 * 60));
   const secs = Math.floor((elapsedTime % (1000 * 60)) / 1000);
-  document.getElementById("timer").textContent = `${pad(hrs)}:${pad(mins)}:${pad(secs)}`;
+
+  const formatted = `${pad(hrs)}:${pad(mins)}:${pad(secs)}`; // ✅ Create formatted string!
+
+  document.getElementById("timer").textContent = formatted;
   document.getElementById("liveTimer").textContent = formatted;
 }
+
 
 function pad(n) {
   return n.toString().padStart(2, "0");
