@@ -621,6 +621,42 @@ window.generateShareableLink = function () {
 //   }
 // };
 
+// window.onload = function () {
+//   const params = new URLSearchParams(window.location.search);
+//   const base64Data = params.get("data");
+
+//   if (base64Data) {
+//     try {
+//       const json = atob(base64Data);
+//       routeData = JSON.parse(json);
+//       alert("Shared route loaded!");
+//       path = routeData.filter(e => e.type === "location").map(e => e.coords);
+//       initMap(() => {
+//         drawSavedRoutePath();
+//         showRouteDataOnMap();
+//       });
+//     } catch (e) {
+//       console.error("Invalid share data.");
+//     }
+//   } else {
+//     const backup = localStorage.getItem("route_backup");
+//     if (backup) {
+//       const restore = confirm("🛠️ Unsaved route found! Would you like to restore your previous tracking?");
+//       if (restore) {
+//         routeData = JSON.parse(backup);
+//         alert("✅ Route recovered successfully!");
+//         if (typeof initRecoveredRoute === "function") {
+//           initRecoveredRoute();
+//         }
+//       } else {
+//         localStorage.removeItem("route_backup");
+//         resetApp();
+//       }
+//     }
+//     loadSavedSessions(); // Always load saved sessions list
+//   }
+// };
+
 window.onload = function () {
   const params = new URLSearchParams(window.location.search);
   const base64Data = params.get("data");
@@ -641,19 +677,40 @@ window.onload = function () {
   } else {
     const backup = localStorage.getItem("route_backup");
     if (backup) {
-      const restore = confirm("🛠️ Unsaved route found! Would you like to restore your previous tracking?");
+      const restore = confirm("🛠️ Unsaved route found! Would you like to restore?");
       if (restore) {
         routeData = JSON.parse(backup);
         alert("✅ Route recovered successfully!");
-        if (typeof initRecoveredRoute === "function") {
-          initRecoveredRoute();
-        }
+
+        // 🛠️ FULL REBUILD:
+        path = routeData.filter(e => e.type === "location").map(e => e.coords);
+        totalDistance = 0;
+        path.forEach((coord, i) => {
+          if (i > 0) totalDistance += haversineDistance(path[i-1], path[i]);
+        });
+
+        elapsedTime = 0; // or later optionally recover exact elapsed time if you store it
+        startTime = Date.now();
+        
+        initMap(() => {
+          drawSavedRoutePath();
+          showRouteDataOnMap();
+        });
+
+        document.getElementById("distance").textContent = totalDistance.toFixed(2) + " km";
+        document.getElementById("liveDistance").textContent = totalDistance.toFixed(2) + " km";
+        document.getElementById("timer").textContent = "00:00:00";
+        document.getElementById("liveTimer").textContent = "00:00:00";
+
+        startTimer(); // 🛠️ restart timer clean
+        startAutoBackup(); // 🛠️ restart auto-saving
       } else {
         localStorage.removeItem("route_backup");
         resetApp();
       }
+    } else {
+      loadSavedSessions();
     }
-    loadSavedSessions(); // Always load saved sessions list
   }
 };
 
