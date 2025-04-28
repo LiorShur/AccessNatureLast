@@ -338,27 +338,72 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 // === SHOW ROUTE & NOTES ===
-window.showRouteDataOnMap = function () {
+let noteMarkers = []; // Global array to track note markers
+
+function showRouteDataOnMap() {
+  // Clear previous note markers first
+  if (noteMarkers.length > 0) {
+    noteMarkers.forEach(marker => marker.setMap(null));
+    noteMarkers = [];
+  }
+
+  if (!routeData || routeData.length === 0) {
+    alert("No notes, photos, or media found in this route.");
+    return;
+  }
+
+  const bounds = new google.maps.LatLngBounds();
+
   routeData.forEach(entry => {
     const { coords, type, content } = entry;
+    if (!coords) return; // Safety
+
+    if (type === "location") {
+      bounds.extend(coords);
+      return; // Skip simple location-only entries
+    }
+
     let infoContent = "";
 
     if (type === "text") {
       infoContent = `<p>${content}</p>`;
     } else if (type === "photo") {
-      infoContent = `<img src="${content}" style="width:150px" onclick="showMediaFullScreen('${content}', 'photo')" />`;
+      infoContent = `<img src="${content}" alt="Photo" style="width:150px" onclick="showMediaFullScreen('${content}', 'photo')">`;
     } else if (type === "audio") {
       infoContent = `<audio controls src="${content}"></audio>`;
     } else if (type === "video") {
       infoContent = `<video controls width="200" src="${content}" onclick="showMediaFullScreen('${content}', 'video')"></video>`;
-    } else return;
+    }
 
-    const marker = new google.maps.Marker({ position: coords, map });
-    const infoWindow = new google.maps.InfoWindow({ content: infoContent });
+    const marker = new google.maps.Marker({
+      position: coords,
+      map: map,
+      icon: {
+        url: type === "photo" ? "📸" :
+             type === "audio" ? "🎙️" :
+             type === "video" ? "🎬" :
+             "📝",
+        scaledSize: new google.maps.Size(32, 32)
+      }
+    });
 
-    marker.addListener("click", () => infoWindow.open(map, marker));
+    const infoWindow = new google.maps.InfoWindow({
+      content: infoContent
+    });
+
+    marker.addListener("click", () => {
+      infoWindow.open(map, marker);
+    });
+
+    noteMarkers.push(marker);
+    bounds.extend(coords);
   });
-};
+
+  if (!bounds.isEmpty()) {
+    map.fitBounds(bounds);
+  }
+}
+
 
 // === FULLSCREEN MEDIA VIEWER ===
 window.showMediaFullScreen = function (content, type) {
