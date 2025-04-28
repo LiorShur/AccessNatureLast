@@ -1011,4 +1011,17 @@ function closeHistory() {
 function toggleDarkMode() {
   document.body.classList.toggle("dark-mode");
 }
+function clearAllSessions() {
+  const confirmClear = confirm("⚠️ Are you sure you want to clear all saved routes? This cannot be undone!");
+
+  if (confirmClear) {
+    localStorage.removeItem("sessions"); // ✅ Clear saved sessions
+    localStorage.removeItem("route_backup"); // ✅ Also clear any backup
+
+    document.getElementById("historyList").innerHTML = ""; // ✅ Clear history panel if open
+    loadSavedSessions(); // ✅ Refresh empty list if necessary
+
+    alert("✅ All saved routes have been cleared!");
+  }
+}
 
