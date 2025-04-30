@@ -72,9 +72,7 @@
   <button onclick="clearAllSessions()">🗑️ Clear All Saved Routes</button>
 </div>
 <div id="archivePanel"></div>
-    <div class="button-row">
-<button onclick="SummaryArchive.showArchiveBrowser()">Browse Summaries</button>
-</div>
+    
     <div class="button-row">
   <button onclick="toggleDarkMode()">🌙☀️ Dark/Light Mode</button>
 </div>
@@ -116,6 +114,9 @@
     </div>
   </div>
 
+<div class="button-row">
+<button id="exportSummaryBtn" onclick="exportRouteSummary()" disabled>📦 Export Route Summary</button>
+</div>
   <input type="file" accept="image/*" capture="environment" id="photoInput" style="display: none" />
   <input type="file" accept="video/*" capture id="videoInput" style="display: none" />
 
