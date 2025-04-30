@@ -542,23 +542,47 @@ window.loadSavedSessions = function () {
 };
 
 // === LOAD A SESSION ===
+// window.loadSession = function (index) {
+//   const sessions = JSON.parse(localStorage.getItem("sessions") || "[]");
+//   const session = sessions[index];
+
+//   routeData = session.data;
+//   totalDistance = parseFloat(session.distance);
+//   document.getElementById("timer").textContent = session.time;
+//   document.getElementById("distance").textContent = totalDistance.toFixed(2) + " km";
+
+//   path = [];
+//   routeData.forEach(entry => {
+//     if (entry.type === "location") {
+//       path.push(entry.coords);
+//     }
+//   });
+
+//   window.initMap(() => {
+//     drawSavedRoutePath();
+//     showRouteDataOnMap();
+//   });
+// };
 window.loadSession = function (index) {
   const sessions = JSON.parse(localStorage.getItem("sessions") || "[]");
   const session = sessions[index];
 
+  if (!session || !session.data || session.data.length === 0) {
+    alert("❌ This session has no data to export.");
+    return;
+  }
+
   routeData = session.data;
   totalDistance = parseFloat(session.distance);
+  elapsedTime = 0;
+  lastCoords = null;
+
+  path = session.data.filter(e => e.type === "location").map(e => e.coords);
+
   document.getElementById("timer").textContent = session.time;
   document.getElementById("distance").textContent = totalDistance.toFixed(2) + " km";
 
-  path = [];
-  routeData.forEach(entry => {
-    if (entry.type === "location") {
-      path.push(entry.coords);
-    }
-  });
-
-  window.initMap(() => {
+  initMap(() => {
     drawSavedRoutePath();
     showRouteDataOnMap();
   });
@@ -810,6 +834,8 @@ const SummaryArchive = (() => {
 })();
 
 async function exportRouteSummary() {
+  console.log("🚨 exportRouteSummary called. routeData:", routeData);
+
   if (!routeData || routeData.length === 0) {
   alert("No route data available to export. Please start tracking first.");
   return;
