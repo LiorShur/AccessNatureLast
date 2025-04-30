@@ -77,7 +77,7 @@ function stopAutoBackup() {
   localStorage.removeItem("route_backup");
   console.log("✅ Auto-backup stopped and cleared.");
 }
-function showSummary() {
+function Summary() {
   alert(`🏁 Route Completed!
 Total Distance: ${totalDistance.toFixed(2)} km
 Total Time: ${document.getElementById("timer").textContent}`);
@@ -145,15 +145,15 @@ window.startTracking = function () {
 
 //   if (watchId) navigator.geolocation.clearWatch(watchId);
 //   stopTimer();
-//   showSummary();
-//   resetApp(); // reset after showing summary
+//   Summary();
+//   resetApp(); // reset after ing summary
 // };
 window.stopTracking = function () {
   if (watchId) navigator.geolocation.clearWatch(watchId);
   stopTimer();
   stopAutoBackup();
 
-  showSummary(); // Show nice summary
+  Summary(); //  nice summary
   
   const wantsToSave = confirm("💾 Do you want to save this route?");
   if (wantsToSave) {
@@ -337,7 +337,7 @@ window.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-// === SHOW ROUTE & NOTES ===
+// ===  ROUTE & NOTES ===
 let noteMarkers = []; // Global array to track note markers
 
 function showRouteDataOnMap() {
@@ -710,147 +710,94 @@ window.onload = function () {
   }
 };
 
+// === SUMMARY ARCHIVE MODULE ===
+const SummaryArchive = (() => {
+  const STORAGE_KEY = "summary_archive";
 
-// async function exportRouteSummary() {
-//   if (!routeData || routeData.length === 0) {
-//   alert("No route data available to export. Please start tracking first.");
-//   return;
-// }
-
-// let hasLocation = routeData.some(entry => entry.type === "location");
-
-// if (!hasLocation) {
-//   alert("No location data found. Start a route and record some movement first!");
-//   return;
-// }
-
-//   const zip = new JSZip();
-//   const notesFolder = zip.folder("notes");
-//   const imagesFolder = zip.folder("images");
-//   const audioFolder = zip.folder("audio");
-
-//   let markersJS = "";
-//   let pathCoords = [];
-//   let noteCounter = 1;
-//   let photoCounter = 1;
-//   let audioCounter = 1;
-
-//   for (const entry of routeData) {
-//     if (entry.type === "location") {
-//       pathCoords.push([entry.coords.lat, entry.coords.lng]);
-//     } else if (entry.type === "text") {
-//       notesFolder.file(`note${noteCounter}.txt`, entry.content);
-//       markersJS += `
-// L.marker([${entry.coords.lat}, ${entry.coords.lng}])
-//   .addTo(map)
-//   .bindPopup("<b>Note ${noteCounter}</b><br>${entry.content}");
-// `;
-//       noteCounter++;
-//     } else if (entry.type === "photo") {
-//       const base64Data = entry.content.split(",")[1];
-//       imagesFolder.file(`photo${photoCounter}.jpg`, base64Data, { base64: true });
-//       markersJS += `
-// L.marker([${entry.coords.lat}, ${entry.coords.lng}])
-//   .addTo(map)
-//   .bindPopup("<b>Photo ${photoCounter}</b><br><img src='images/photo${photoCounter}.jpg' style='width:200px' onclick='showFullScreen(this)'>");
-// `;
-//       photoCounter++;
-//     } else if (entry.type === "audio") {
-//       const base64Data = entry.content.split(",")[1];
-//       audioFolder.file(`audio${audioCounter}.webm`, base64Data, { base64: true });
-//       markersJS += `
-// L.marker([${entry.coords.lat}, ${entry.coords.lng}])
-//   .addTo(map)
-//   .bindPopup("<b>Audio ${audioCounter}</b><br><audio controls src='audio/audio${audioCounter}.webm'></audio>");
-// `;
-//       audioCounter++;
-//     }
-//   }
-
-//   const htmlContent = `
-// <!DOCTYPE html>
-// <html lang="en">
-// <head>
-// <meta charset="UTF-8">
-// <title>Route Summary</title>
-// <meta name="viewport" content="width=device-width, initial-scale=1.0">
-// <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
-// <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
-// <style>
-//   #map { height: 100vh; margin: 0; }
-//   #summaryPanel {
-//     position: absolute; top: 10px; right: 10px;
-//     background: white; padding: 10px; border-radius: 8px;
-//     box-shadow: 0 0 10px rgba(0,0,0,0.3); font-size: 14px;
-//   }
-// </style>
-// </head>
-// <body>
-// <div id="map"></div>
-// <div id="summaryPanel">
-//   <b>Distance:</b> ${totalDistance.toFixed(2)} km<br>
-//   <b>Photos:</b> ${photoCounter - 1}<br>
-//   <b>Notes:</b> ${noteCounter - 1}<br>
-//   <b>Audios:</b> ${audioCounter - 1}<br>
-// </div>
-// <script>
-// var map = L.map('map').setView([${pathCoords[0][0]}, ${pathCoords[0][1]}], 15);
-// L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-//   maxZoom: 19,
-//   attribution: '&copy; OpenStreetMap contributors'
-// }).addTo(map);
-
-// var route = L.polyline(${JSON.stringify(pathCoords)}, { color: 'blue' }).addTo(map);
-// map.fitBounds(route.getBounds());
-
-// ${markersJS}
-
-// // Fullscreen photo viewer
-// function showFullScreen(img) {
-//   var overlay = document.createElement("div");
-//   overlay.style.position = "fixed";
-//   overlay.style.top = 0;
-//   overlay.style.left = 0;
-//   overlay.style.width = "100%";
-//   overlay.style.height = "100%";
-//   overlay.style.background = "rgba(0,0,0,0.9)";
-//   overlay.style.display = "flex";
-//   overlay.style.alignItems = "center";
-//   overlay.style.justifyContent = "center";
-//   overlay.style.zIndex = "9999";
-//   overlay.onclick = () => document.body.removeChild(overlay);
-
-//   var fullImg = document.createElement("img");
-//   fullImg.src = img.src;
-//   fullImg.style.maxWidth = "90%";
-//   fullImg.style.maxHeight = "90%";
-//   overlay.appendChild(fullImg);
-//   document.body.appendChild(overlay);
-// }
-// </script>
-// </body>
-// </html>
-// `;
-
-//   zip.file("index.html", htmlContent);
-
-//   const blob = await zip.generateAsync({ type: "blob" });
-//   const url = URL.createObjectURL(blob);
-
-//   const a = document.createElement("a");
-//   a.href = url;
-//   a.download = `route-summary-${Date.now()}.zip`;
-//   a.click();
-// }
-
-window.exportRouteSummary = async function () {
-  if (!routeData || routeData.length === 0) {
-    alert("No route data available to export.");
-    return;
+  function getArchive() {
+    return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
   }
 
-  const name = prompt("Enter a name for this route summary:");
-  if (!name) return;
+  function saveToArchive(name, htmlContent, media = {}) {
+    const archive = getArchive();
+    archive.push({
+      id: Date.now(),
+      name,
+      date: new Date().toISOString(),
+      html: htmlContent,
+      media
+    });
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(archive));
+    alert("✅ Route summary saved to archive!");
+  }
+
+  function listSummaries() {
+    return getArchive();
+  }
+
+  function deleteSummary(id) {
+    let archive = getArchive();
+    archive = archive.filter(item => item.id !== id);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(archive));
+  }
+
+  function viewSummary(id) {
+    const item = getArchive().find(entry => entry.id === id);
+    if (!item) return alert("Summary not found!");
+
+    // Convert HTML and base64 media into a Blob and open in new tab
+    const blob = new Blob([item.html], { type: "text/html" });
+    const url = URL.createObjectURL(blob);
+    window.open(url, "_blank");
+  }
+
+  function showArchiveBrowser(containerId = "archivePanel") {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    const archive = getArchive();
+    container.innerHTML = "<h3>📜 Saved Route Summaries</h3>";
+
+    if (archive.length === 0) {
+      container.innerHTML += "<p>No summaries found.</p>";
+      return;
+    }
+
+    const ul = document.createElement("ul");
+    archive.forEach(item => {
+      const li = document.createElement("li");
+      li.innerHTML = `
+        <b>${item.name}</b> (${item.date.split("T")[0]})
+        <button onclick="SummaryArchive.viewSummary(${item.id})">View</button>
+        <button onclick="SummaryArchive.deleteSummary(${item.id})">🗑️ Delete</button>
+      `;
+      ul.appendChild(li);
+    });
+
+    container.appendChild(ul);
+  }
+
+  return {
+    saveToArchive,
+    listSummaries,
+    viewSummary,
+    deleteSummary,
+    showArchiveBrowser
+  };
+})();
+
+async function exportRouteSummary() {
+  if (!routeData || routeData.length === 0) {
+  alert("No route data available to export. Please start tracking first.");
+  return;
+}
+
+let hasLocation = routeData.some(entry => entry.type === "location");
+
+if (!hasLocation) {
+  alert("No location data found. Start a route and record some movement first!");
+  return;
+}
 
   const zip = new JSZip();
   const notesFolder = zip.folder("notes");
@@ -862,39 +809,35 @@ window.exportRouteSummary = async function () {
   let noteCounter = 1;
   let photoCounter = 1;
   let audioCounter = 1;
-  const mediaForArchive = {};
 
   for (const entry of routeData) {
     if (entry.type === "location") {
       pathCoords.push([entry.coords.lat, entry.coords.lng]);
     } else if (entry.type === "text") {
-      const filename = `note${noteCounter}.txt`;
-      notesFolder.file(filename, entry.content);
-      mediaForArchive[`notes/${filename}`] = entry.content;
+      notesFolder.file(`note${noteCounter}.txt`, entry.content);
       markersJS += `
 L.marker([${entry.coords.lat}, ${entry.coords.lng}])
   .addTo(map)
-  .bindPopup("<b>Note ${noteCounter}</b><br>${entry.content}");`;
+  .bindPopup("<b>Note ${noteCounter}</b><br>${entry.content}");
+`;
       noteCounter++;
     } else if (entry.type === "photo") {
       const base64Data = entry.content.split(",")[1];
-      const filename = `photo${photoCounter}.jpg`;
-      imagesFolder.file(filename, base64Data, { base64: true });
-      mediaForArchive[`images/${filename}`] = entry.content;
+      imagesFolder.file(`photo${photoCounter}.jpg`, base64Data, { base64: true });
       markersJS += `
 L.marker([${entry.coords.lat}, ${entry.coords.lng}])
   .addTo(map)
-  .bindPopup("<b>Photo ${photoCounter}</b><br><img src='images/${filename}' style='width:200px' onclick='showFullScreen(this)'>");`;
+  .bindPopup("<b>Photo ${photoCounter}</b><br><img src='images/photo${photoCounter}.jpg' style='width:200px' onclick='showFullScreen(this)'>");
+`;
       photoCounter++;
     } else if (entry.type === "audio") {
       const base64Data = entry.content.split(",")[1];
-      const filename = `audio${audioCounter}.webm`;
-      audioFolder.file(filename, base64Data, { base64: true });
-      mediaForArchive[`audio/${filename}`] = entry.content;
+      audioFolder.file(`audio${audioCounter}.webm`, base64Data, { base64: true });
       markersJS += `
 L.marker([${entry.coords.lat}, ${entry.coords.lng}])
   .addTo(map)
-  .bindPopup("<b>Audio ${audioCounter}</b><br><audio controls src='audio/${filename}'></audio>");`;
+  .bindPopup("<b>Audio ${audioCounter}</b><br><audio controls src='audio/audio${audioCounter}.webm'></audio>");
+`;
       audioCounter++;
     }
   }
@@ -903,78 +846,78 @@ L.marker([${entry.coords.lat}, ${entry.coords.lng}])
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>${name}</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
-  <style>
-    #map { height: 100vh; margin: 0; }
-    #summaryPanel {
-      position: absolute; top: 10px; right: 10px;
-      background: white; padding: 10px; border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.3); font-size: 14px;
-    }
-  </style>
+<meta charset="UTF-8">
+<title>Route Summary</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+<style>
+  #map { height: 100vh; margin: 0; }
+  #summaryPanel {
+    position: absolute; top: 10px; right: 10px;
+    background: white; padding: 10px; border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3); font-size: 14px;
+  }
+</style>
 </head>
 <body>
-  <div id="map"></div>
-  <div id="summaryPanel">
-    <b>Distance:</b> ${totalDistance.toFixed(2)} km<br>
-    <b>Photos:</b> ${photoCounter - 1}<br>
-    <b>Notes:</b> ${noteCounter - 1}<br>
-    <b>Audios:</b> ${audioCounter - 1}<br>
-  </div>
-  <script>
-    var map = L.map('map').setView([${pathCoords[0][0]}, ${pathCoords[0][1]}], 15);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-      attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(map);
+<div id="map"></div>
+<div id="summaryPanel">
+  <b>Distance:</b> ${totalDistance.toFixed(2)} km<br>
+  <b>Photos:</b> ${photoCounter - 1}<br>
+  <b>Notes:</b> ${noteCounter - 1}<br>
+  <b>Audios:</b> ${audioCounter - 1}<br>
+</div>
+<script>
+var map = L.map('map').setView([${pathCoords[0][0]}, ${pathCoords[0][1]}], 15);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  maxZoom: 19,
+  attribution: '&copy; OpenStreetMap contributors'
+}).addTo(map);
 
-    var route = L.polyline(${JSON.stringify(pathCoords)}, { color: 'blue' }).addTo(map);
-    map.fitBounds(route.getBounds());
+var route = L.polyline(${JSON.stringify(pathCoords)}, { color: 'blue' }).addTo(map);
+map.fitBounds(route.getBounds());
 
-    ${markersJS}
+${markersJS}
 
-    function showFullScreen(img) {
-      var overlay = document.createElement("div");
-      overlay.style.position = "fixed";
-      overlay.style.top = 0;
-      overlay.style.left = 0;
-      overlay.style.width = "100%";
-      overlay.style.height = "100%";
-      overlay.style.background = "rgba(0,0,0,0.9)";
-      overlay.style.display = "flex";
-      overlay.style.alignItems = "center";
-      overlay.style.justifyContent = "center";
-      overlay.style.zIndex = "9999";
-      overlay.onclick = () => document.body.removeChild(overlay);
+// Fullscreen photo viewer
+function showFullScreen(img) {
+  var overlay = document.createElement("div");
+  overlay.style.position = "fixed";
+  overlay.style.top = 0;
+  overlay.style.left = 0;
+  overlay.style.width = "100%";
+  overlay.style.height = "100%";
+  overlay.style.background = "rgba(0,0,0,0.9)";
+  overlay.style.display = "flex";
+  overlay.style.alignItems = "center";
+  overlay.style.justifyContent = "center";
+  overlay.style.zIndex = "9999";
+  overlay.onclick = () => document.body.removeChild(overlay);
 
-      var fullImg = document.createElement("img");
-      fullImg.src = img.src;
-      fullImg.style.maxWidth = "90%";
-      fullImg.style.maxHeight = "90%";
-      overlay.appendChild(fullImg);
-      document.body.appendChild(overlay);
-    }
-  </script>
+  var fullImg = document.createElement("img");
+  fullImg.src = img.src;
+  fullImg.style.maxWidth = "90%";
+  fullImg.style.maxHeight = "90%";
+  overlay.appendChild(fullImg);
+  document.body.appendChild(overlay);
+}
+</script>
 </body>
 </html>
 `;
-
-  // Save to archive (for in-browser stored summary)
+ // Save to archive (for in-browser stored summary)
   SummaryArchive.saveToArchive(name, htmlContent, mediaForArchive);
-
-  // Export as ZIP
   zip.file("index.html", htmlContent);
+
   const blob = await zip.generateAsync({ type: "blob" });
   const url = URL.createObjectURL(blob);
+
   const a = document.createElement("a");
   a.href = url;
   a.download = `route-summary-${Date.now()}.zip`;
   a.click();
-};
+}
 
 async function exportAllRoutes() {
   const sessions = JSON.parse(localStorage.getItem("sessions") || "[]");
