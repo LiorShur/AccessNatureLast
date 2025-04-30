@@ -1235,3 +1235,8 @@ function clearAllSessions() {
     alert("✅ All saved routes have been cleared!");
   }
 }
+function prepareAndExport() {
+  loadMostRecentSession(() => {
+    exportRouteSummary(); // now routeData is populated
+  });
+}
