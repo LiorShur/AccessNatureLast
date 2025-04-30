@@ -605,6 +605,35 @@ function drawSavedRoutePath() {
     marker.setPosition(path[0]);
   }
 }
+function loadMostRecentSession(callback) {
+  const sessions = JSON.parse(localStorage.getItem("sessions") || "[]");
+  if (sessions.length === 0) {
+    alert("❌ No saved sessions found to export.");
+    return;
+  }
+
+  const mostRecent = sessions[sessions.length - 1];
+  routeData = mostRecent.data;
+  totalDistance = parseFloat(mostRecent.distance);
+  elapsedTime = 0;
+  path = routeData.filter(e => e.type === "location").map(e => e.coords);
+
+  // Update displays
+  document.getElementById("timer").textContent = mostRecent.time;
+  document.getElementById("distance").textContent = totalDistance.toFixed(2) + " km";
+  document.getElementById("liveTimer").textContent = mostRecent.time;
+  document.getElementById("liveDistance").textContent = totalDistance.toFixed(2) + " km";
+
+  if (typeof initMap === "function") {
+    initMap(() => {
+      drawSavedRoutePath();
+      showRouteDataOnMap();
+      if (typeof callback === "function") callback();
+    });
+  } else if (typeof callback === "function") {
+    callback(); // export can proceed anyway
+  }
+}
 
 // === EXPORT JSON ===
 window.exportData = function () {
