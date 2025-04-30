@@ -384,17 +384,25 @@ function showRouteDataOnMap() {
       infoContent = `<video controls width="200" src="${content}" onclick="showMediaFullScreen('${content}', 'video')"></video>`;
     }
 
+    // const marker = new google.maps.Marker({
+    //   position: coords,
+    //   map: map,
+    //   icon: {
+    //     url: type === "photo" ? "📸" :
+    //          type === "audio" ? "🎙️" :
+    //          type === "video" ? "🎬" :
+    //          "📝",
+    //     scaledSize: new google.maps.Size(32, 32)
+    //   }
+    // });
     const marker = new google.maps.Marker({
-      position: coords,
-      map: map,
-      icon: {
-        url: type === "photo" ? "📸" :
-             type === "audio" ? "🎙️" :
-             type === "video" ? "🎬" :
-             "📝",
-        scaledSize: new google.maps.Size(32, 32)
-      }
-    });
+  position: coords,
+  map: map,
+  label: type === "photo" ? "📸" :
+         type === "audio" ? "🎙️" :
+         type === "video" ? "🎬" : "📝"
+});
+
 
     const infoWindow = new google.maps.InfoWindow({
       content: infoContent
