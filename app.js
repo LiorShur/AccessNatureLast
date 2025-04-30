@@ -63,13 +63,24 @@ window.initMap = function (callback) {
 };
 let autoSaveInterval = null;
 
+// function startAutoBackup() {
+//   autoSaveInterval = setInterval(() => {
+//     if (routeData.length > 0) {
+//       localStorage.setItem("route_backup", JSON.stringify(routeData));
+//       console.log("🔄 Auto-saved route progress.");
+//     }
+//   }, 20000); // 20 seconds
+// }
 function startAutoBackup() {
   autoSaveInterval = setInterval(() => {
-    if (routeData.length > 0) {
-      localStorage.setItem("route_backup", JSON.stringify(routeData));
-      console.log("🔄 Auto-saved route progress.");
-    }
-  }, 20000); // 20 seconds
+    const backupData = {
+      routeData,
+      totalDistance,
+      elapsedTime
+    };
+    localStorage.setItem("route_backup", JSON.stringify(backupData));
+    console.log("🔄 Auto-saved route progress.");
+  }, 20000);
 }
 
 function stopAutoBackup() {
@@ -152,14 +163,12 @@ window.stopTracking = function () {
   if (watchId) navigator.geolocation.clearWatch(watchId);
   stopTimer();
   stopAutoBackup();
-
-  Summary(); //  nice summary
   
   const wantsToSave = confirm("💾 Do you want to save this route?");
   if (wantsToSave) {
     saveSession(); // Save session properly
   }
-  
+  Summary(); //  nice summary
   resetApp(); // Clean reset after saving or not
 };
 
@@ -399,9 +408,15 @@ function showRouteDataOnMap() {
     bounds.extend(coords);
   });
 
+  // if (!bounds.isEmpty()) {
+  //   map.fitBounds(bounds);
+  // }
   if (!bounds.isEmpty()) {
-    map.fitBounds(bounds);
-  }
+  map.fitBounds(bounds);
+} else {
+  map.setZoom(15);
+}
+
 }
 
 
