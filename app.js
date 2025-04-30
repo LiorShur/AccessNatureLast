@@ -586,6 +586,8 @@ window.loadSession = function (index) {
     drawSavedRoutePath();
     showRouteDataOnMap();
   });
+  document.getElementById("exportSummaryBtn").disabled = false;
+
 };
 
 function drawSavedRoutePath() {
