@@ -989,10 +989,16 @@ function showFullScreen(img) {
 </html>
 `;
  // Save to archive (for in-browser stored summary)
-  const mediaForArchive = {
-  "photo1.jpg": base64String,
-  "note1.txt": "A nice note"
-};
+  const mediaForArchive = {};
+
+  routeData.forEach((entry, i) => {
+    if (entry.type === "photo") {
+      const base64 = entry.content.split(",")[1]; // remove data URI prefix
+      mediaForArchive[`photo${i + 1}.jpg`] = base64;
+    } else if (entry.type === "text") {
+      mediaForArchive[`note${i + 1}.txt`] = entry.content;
+    }
+  });
 
   SummaryArchive.saveToArchive(name, htmlContent, mediaForArchive);
   zip.file("index.html", htmlContent);
