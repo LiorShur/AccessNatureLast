@@ -204,6 +204,7 @@ body.dark-mode #historyList li {
   border: none;
   cursor: pointer;
   border-radius: 4px;
+  flex-wrap: nowrap; /* ✅ No wrapping even if narrow */
 }
 
 .dropdown-content {
