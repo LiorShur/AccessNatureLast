@@ -573,6 +573,8 @@ window.loadSession = function (index) {
   }
 
   routeData = session.data;
+  console.log("Session loaded. routeData:", routeData);
+
   totalDistance = parseFloat(session.distance);
   elapsedTime = 0;
   lastCoords = null;
