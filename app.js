@@ -1010,6 +1010,10 @@ function showFullScreen(img) {
   a.href = url;
   a.download = `route-summary-${Date.now()}.zip`;
   a.click();
+
+  // ✅ Re-initialize the map if needed
+resetApp();
+initMap();
 }
 
 async function exportAllRoutes() {
