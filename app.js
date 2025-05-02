@@ -989,6 +989,11 @@ function showFullScreen(img) {
 </html>
 `;
  // Save to archive (for in-browser stored summary)
+  const mediaForArchive = {
+  "photo1.jpg": base64String,
+  "note1.txt": "A nice note"
+};
+
   SummaryArchive.saveToArchive(name, htmlContent, mediaForArchive);
   zip.file("index.html", htmlContent);
 
