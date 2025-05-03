@@ -46,14 +46,12 @@
     <div class="button-row orange">
 <!--     <button onclick="exportRouteSummary()">📦 Export Route Summary</button> -->
 <!--       <button id="exportSummaryBtn" onclick="exportRouteSummary()" disabled>📦 Export Route Summary</button> -->
-    <button onclick="prepareAndExport()">📦 Export Last Route</button>
-    <button onclick="exportAllRoutes()">🌍 Export All Routes & Explorer</button>
-    <button onclick="window.open('explorer.html')">Routes Explorer Page</button>
-    </div>
-    <div class="dropdown">
+<!--     <button onclick="prepareAndExport()">📦 Export Last Route</button>
+    <button onclick="exportAllRoutes()">🌍 Export All Routes & Explorer</button> -->
+      <div class="dropdown">
   <button class="dropbtn">📁 Export Options</button>
   <div class="dropdown-content">
-    <a href="#" onclick="prepareAndExport()">📦 Export Most Recent Route</a>
+    <a href="#" onclick="prepareAndExport()">📦 Export Last Route</a>
     <a href="#" onclick="exportAllRoutes()">🗂️ Export All Routes</a>
     <a href="#" onclick="exportData()">💾 Export as JSON</a>
     <a href="#" onclick="exportGPX()">📍 Export as GPX</a>
@@ -61,19 +59,22 @@
   </div>
 </div>
 
+    <button onclick="window.open('explorer.html')">Routes Explorer Page</button>
+    </div>
+    
     <div class="button-row orange">
       <button onclick="saveSession()">💾 Save</button>
       <button onclick="generateShareableLink()">🔗 Share</button>
     </div>
 
-    <div class="button-row gray">
+<!--     <div class="button-row gray">
       <button onclick="exportData()">📄 JSON</button>
       <button onclick="exportPDF()">📄 PDF</button>
       <button onclick="exportGPX()">📍 GPX</button>
     </div> 
     <div class="button-row">
   <button onclick="openHistory()">View Past Routes</button>
-</div>
+</div> -->
 
 <div id="historyPanel" style="display:none;">
   <h3>Past Sessions</h3>
