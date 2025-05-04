@@ -791,6 +791,19 @@ window.onload = function () {
 };
 
 // === SUMMARY ARCHIVE MODULE ===
+
+function toggleArchivePanel() {
+  const panel = document.getElementById("archivePanel");
+  if (!panel) return;
+
+  if (panel.style.display === "none" || panel.style.display === "") {
+    SummaryArchive.showArchiveBrowser("archivePanel");
+    panel.style.display = "block";
+  } else {
+    panel.style.display = "none";
+  }
+}
+
 const SummaryArchive = (() => {
   const STORAGE_KEY = "summary_archive";
 
