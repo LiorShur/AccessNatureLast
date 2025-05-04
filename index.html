@@ -50,14 +50,14 @@
     <button onclick="exportAllRoutes()">🌍 Export All Routes & Explorer</button> -->
 </div>
 
-    <button onclick="window.open('explorer.html')">Routes Explorer Page</button>
-    </div>
+<!--     <button onclick="window.open('explorer.html')">Routes Explorer Page</button>
+    </div> -->
     
-    <div class="button-row orange">
+<!--     <div class="button-row orange">
       <button onclick="saveSession()">💾 Save</button>
       <button onclick="generateShareableLink()">🔗 Share</button>
     </div>
-
+ -->
 <!--     <div class="button-row gray">
       <button onclick="exportData()">📄 JSON</button>
       <button onclick="exportPDF()">📄 PDF</button>
@@ -66,15 +66,7 @@
     <div class="button-row">
   <button onclick="openHistory()">View Past Routes</button>
 </div> -->
-<div class="dropdown">
-  <button class="dropbtn">📁 Export Options</button>
-  <div class="dropdown-content">
-    <a href="#" onclick="prepareAndExport()">📦 Export Last Route</a>
-    <a href="#" onclick="exportAllRoutes()">🗂️ Export All Routes</a>
-    <a href="#" onclick="exportData()">💾 Export as JSON</a>
-    <a href="#" onclick="exportGPX()">📍 Export as GPX</a>
-    <a href="#" onclick="exportPDF()">📝 Export as PDF</a>
-  </div>
+
 <div id="historyPanel" style="display:none;">
   <h3>Past Sessions</h3>
   <ul id="historyList"></ul>
@@ -91,6 +83,15 @@
   <div class="button-row">  
 <button onclick="SummaryArchive.showArchiveBrowser()">Browse Summaries</button>
     </div>
+  <div class="dropdown">
+  <button class="dropbtn">📁 Export Options</button>
+  <div class="dropdown-content">
+    <a href="#" onclick="prepareAndExport()">📦 Export Last Route</a>
+    <a href="#" onclick="exportAllRoutes()">🗂️ Export All Routes</a>
+    <a href="#" onclick="exportData()">💾 Export as JSON</a>
+    <a href="#" onclick="exportGPX()">📍 Export as GPX</a>
+    <a href="#" onclick="exportPDF()">📝 Export as PDF</a>
+  </div>
 <!--     <div class="button-row">
   <button onclick="startTracking()">Start</button>
   <button onclick="togglePause()" id="pauseButtonLabel">Pause</button>
