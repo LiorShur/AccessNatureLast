@@ -107,7 +107,14 @@ button {
 .gray button { background: #455a64; }
 
 .sessions {
-  margin: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap; /* ✅ No wrapping even if narrow */
+  margin: 2px 0;
+  padding: 2px;
+  border-radius: 8px;
+/*   margin: 20px; */
 }
 
 .sessions h3 {
