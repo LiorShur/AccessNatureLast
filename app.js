@@ -636,6 +636,14 @@ function loadMostRecentSession(callback) {
     callback(); // export can proceed anyway
   }
 }
+function toggleExportDropdown() {
+  const dropdown = document.getElementById("exportDropdown");
+  if (!dropdown) return;
+
+  dropdown.style.display = dropdown.style.display === "none" || dropdown.style.display === ""
+    ? "block"
+    : "none";
+}
 
 // === EXPORT JSON ===
 window.exportData = function () {
