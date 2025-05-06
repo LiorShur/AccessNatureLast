@@ -201,7 +201,7 @@ body.dark-mode #historyList li {
 }
 
 .dropbtn {
-  display: flex;
+/*   display: flex;
   justify-content: center;
   align-items: center;
   background-color: #2196F3;
@@ -211,7 +211,18 @@ body.dark-mode #historyList li {
   border: none;
   cursor: pointer;
   border-radius: 4px;
-  flex-wrap: nowrap; /* ✅ No wrapping even if narrow */
+  flex-wrap: nowrap; /* ✅ No wrapping even if narrow */ */
+  flex: 1 1 auto; /* ✅ Let buttons shrink a bit if needed */
+  min-width: 80px; /* ✅ Minimum width for touch comfort */
+  margin: 6px;
+  padding: 5px 5px;
+  font-size: 16px;
+  border: none;
+  background-color: #4CAF50;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .dropdown-content {
