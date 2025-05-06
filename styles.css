@@ -204,6 +204,8 @@ position: relative;
 }
 
 .dropbtn {
+  flex: 1 1 auto; /* ✅ Let buttons shrink a bit if needed */
+  min-width: 80px; /* ✅ Minimum width for touch comfort */
 background-color: #2196F3;
   color: white;
   padding: 5px 5px;
