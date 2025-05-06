@@ -191,7 +191,9 @@ body.dark-mode #historyList li {
 }
 
 .dropdown {
-  display:flex;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   flex-wrap: nowrap; /* ✅ No wrapping even if narrow */
   position: relative;
   display: inline-block;
@@ -199,6 +201,9 @@ body.dark-mode #historyList li {
 }
 
 .dropbtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: #2196F3;
   color: white;
   padding: 10px 16px;
