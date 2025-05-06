@@ -191,27 +191,12 @@ body.dark-mode #historyList li {
 }
 
 .dropdown {
-/*   display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: nowrap; /* ✅ No wrapping even if narrow */
-/*   position: relative;
+  position: relative;
   display: inline-block;
-  margin: 10px; */ */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: nowrap; /* ✅ No wrapping even if narrow */
-  margin: 2px 0;
-  padding: 2px;
-  border-radius: 8px;
-  overflow-x: auto; /* ✅ allow horizontal scroll if absolutely necessary */
+  margin: 10px;
 }
 
 .dropbtn {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   background-color: #2196F3;
   color: white;
   padding: 10px 16px;
@@ -219,7 +204,6 @@ body.dark-mode #historyList li {
   border: none;
   cursor: pointer;
   border-radius: 4px;
-  flex-wrap: nowrap; /* ✅ No wrapping even if narrow */
 }
 
 .dropdown-content {
@@ -247,6 +231,7 @@ body.dark-mode #historyList li {
 .dropdown:hover .dropdown-content {
   display: block;
 }
+
 
 @media (max-width: 600px) {
   .button-row button {
