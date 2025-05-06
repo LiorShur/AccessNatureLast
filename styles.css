@@ -195,7 +195,6 @@ body.dark-mode #historyList li {
   justify-content: center;
   align-items: center;
   flex-wrap: nowrap; /* ✅ No wrapping even if narrow */
-  overflow-x: auto; /* ✅ allow horizontal scroll if absolutely necessary */
   position: relative;
   display: inline-block;
   margin: 10px;
