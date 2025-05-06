@@ -198,8 +198,12 @@ body.dark-mode #historyList li {
 }
 
 .dropdown {
-position: relative;
-  display: inline-block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap; /* ✅ No wrapping even if narrow */
+  position: relative;
+/*   display: inline-block; */
   margin: 2px 0px;
 }
 
