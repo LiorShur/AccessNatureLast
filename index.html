@@ -66,26 +66,28 @@
 <!--     <div class="button-row"> -->
 <!--   <button onclick="openHistory()">View Past Routes</button>
 </div> -->
-
+<div class="button-row green">
+  <button onclick="clearAllSessions()">🗑️ Clear All Saved Routes</button>
+</div>
+    <div class="button-row green">
+  <button onclick="toggleDarkMode()">🌙☀️ Dark/Light Mode</button>
+</div>
+  <div id="archivePanel" class="button-row" style="display: none;"></div>
+<div class="button-row orange">
+    <button onclick="toggleArchivePanel()">📜 Browse Summaries</button>
+</div>  
 <div id="historyPanel" style="display:none;">
   <h3>Past Sessions</h3>
   <ul id="historyList"></ul>
   <button onclick="closeHistory()">Close</button>
 </div>
-<div class="button-row green">
-  <button onclick="clearAllSessions()">🗑️ Clear All Saved Routes</button>
-</div>
+
     
-    <div class="button-row green">
-  <button onclick="toggleDarkMode()">🌙☀️ Dark/Light Mode</button>
-</div>
+    
 <!-- <div id="archivePanel"></div>  
 <button onclick="SummaryArchive.showArchiveBrowser()">Browse Summaries</button>
     </div> -->
-    <div id="archivePanel" class="button-row" style="display: none;"></div>
-<div class="button-row orange">
-    <button onclick="toggleArchivePanel()">📜 Browse Summaries</button>
-</div>
+    
 <!--     <div class="button-row gray"> -->
 <!--   <div class="dropdown">
   <button class="dropbtn">📁 Export Options</button>
