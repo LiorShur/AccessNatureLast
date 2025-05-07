@@ -870,6 +870,7 @@ const SummaryArchive = (() => {
     localStorage.removeItem(STORAGE_KEY);
     SummaryArchive.showArchiveBrowser(); // Refresh UI
     alert("🧹 Archive cleared!");
+    toggleArchivePanel();
   }
 }
 
@@ -905,8 +906,7 @@ const SummaryArchive = (() => {
     viewSummary,
     deleteSummary,
     showArchiveBrowser,
-    clearAll,
-    toggleArchivePanel
+    clearAll
   };
 })();
 
