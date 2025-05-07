@@ -978,12 +978,12 @@ L.marker([${entry.coords.lat}, ${entry.coords.lng}])
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
 <style>
-  // #map { height: 100vh; margin: 0; }
+ <!-- // #map { height: 100vh; margin: 0; }
   // #summaryPanel {
   //   position: absolute; top: 10px; right: 10px;
   //   background: white; padding: 10px; border-radius: 8px;
   //   box-shadow: 0 0 10px rgba(0,0,0,0.3); font-size: 14px;
-  // }
+  // } -->
   body { margin: 0; font-family: Arial, sans-serif; }
     #map { height: 60vh; }
     #summaryPanel {
@@ -1013,13 +1013,13 @@ L.marker([${entry.coords.lat}, ${entry.coords.lng}])
 </style>
 </head>
 <body>
-// <div id="map"></div>
+<!--// <div id="map"></div>
 // <div id="summaryPanel">
 //   <b>Distance:</b> ${totalDistance.toFixed(2)} km<br>
 //   <b>Photos:</b> ${photoCounter - 1}<br>
 //   <b>Notes:</b> ${noteCounter - 1}<br>
 //   <b>Audios:</b> ${audioCounter - 1}<br>
-// </div>
+// </div> -->
 <div id="summaryPanel">
     <div id="routeTitle">📍 ${name}</div>
     <div class="stats">
