@@ -235,6 +235,16 @@ background-color: #2196F3;
 .dropdown:hover .dropdown-content {
   display: block;
 }
+.toggle-panel {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  margin-top: 5px; /* ensures space below button */
+}
+
+.toggle-panel.open {
+  max-height: 500px; /* or auto with care */
+}
 
 
 @media (max-width: 600px) {
