@@ -800,15 +800,27 @@ window.onload = function () {
 
 // === SUMMARY ARCHIVE MODULE ===
 
+// function toggleArchivePanel() {
+//   const panel = document.getElementById("archivePanel");
+//   if (!panel) return;
+
+//   if (panel.style.display === "none" || panel.style.display === "") {
+//     SummaryArchive.showArchiveBrowser("archivePanel");
+//     panel.style.display = "block";
+//   } else {
+//     panel.style.display = "none";
+//   }
+// }
 function toggleArchivePanel() {
   const panel = document.getElementById("archivePanel");
-  if (!panel) return;
+  const arrow = document.getElementById("archiveArrow");
 
-  if (panel.style.display === "none" || panel.style.display === "") {
+  panel.classList.toggle("open");
+  if (panel.classList.contains("open")) {
+    arrow.textContent = "▲";
     SummaryArchive.showArchiveBrowser("archivePanel");
-    panel.style.display = "block";
   } else {
-    panel.style.display = "none";
+    arrow.textContent = "▼";
   }
 }
 
