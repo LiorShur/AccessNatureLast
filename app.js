@@ -973,27 +973,69 @@ L.marker([${entry.coords.lat}, ${entry.coords.lng}])
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Route Summary</title>
+<title>${name}</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
 <style>
-  #map { height: 100vh; margin: 0; }
-  #summaryPanel {
-    position: absolute; top: 10px; right: 10px;
-    background: white; padding: 10px; border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.3); font-size: 14px;
-  }
+  // #map { height: 100vh; margin: 0; }
+  // #summaryPanel {
+  //   position: absolute; top: 10px; right: 10px;
+  //   background: white; padding: 10px; border-radius: 8px;
+  //   box-shadow: 0 0 10px rgba(0,0,0,0.3); font-size: 14px;
+  // }
+  body { margin: 0; font-family: Arial, sans-serif; }
+    #map { height: 60vh; }
+    #summaryPanel {
+      padding: 20px;
+      background: #f7f7f7;
+    }
+    #routeTitle {
+      font-size: 24px;
+      margin-bottom: 10px;
+      color: #2c3e50;
+    }
+    .stats {
+      margin-top: 10px;
+    }
+    .stats b {
+      display: inline-block;
+      width: 120px;
+    }
+    #description {
+      margin-top: 20px;
+    }
+    #description textarea {
+      width: 100%;
+      height: 100px;
+      font-size: 14px;
+    }
 </style>
 </head>
 <body>
-<div id="map"></div>
+// <div id="map"></div>
+// <div id="summaryPanel">
+//   <b>Distance:</b> ${totalDistance.toFixed(2)} km<br>
+//   <b>Photos:</b> ${photoCounter - 1}<br>
+//   <b>Notes:</b> ${noteCounter - 1}<br>
+//   <b>Audios:</b> ${audioCounter - 1}<br>
+// </div>
 <div id="summaryPanel">
-  <b>Distance:</b> ${totalDistance.toFixed(2)} km<br>
-  <b>Photos:</b> ${photoCounter - 1}<br>
-  <b>Notes:</b> ${noteCounter - 1}<br>
-  <b>Audios:</b> ${audioCounter - 1}<br>
-</div>
+    <div id="routeTitle">📍 ${name}</div>
+    <div class="stats">
+      <div><b>Distance:</b> ${totalDistance.toFixed(2)} km</div>
+      <div><b>Time:</b> ${document.getElementById("timer").textContent}</div>
+      <div><b>Photos:</b> ${photoCounter - 1}</div>
+      <div><b>Notes:</b> ${noteCounter - 1}</div>
+      <div><b>Audios:</b> ${audioCounter - 1}</div>
+    </div>
+    <div id="description">
+      <h4>General Description:</h4>
+      <textarea placeholder="Add notes or observations about the route here..."></textarea>
+    </div>
+  </div>
+
+  <div id="map"></div>
 <script>
 var map = L.map('map').setView([${pathCoords[0][0]}, ${pathCoords[0][1]}], 15);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
