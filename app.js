@@ -863,6 +863,15 @@ const SummaryArchive = (() => {
     const url = URL.createObjectURL(blob);
     window.open(url, "_blank");
   }
+  
+  function clearAll() {
+  const confirmClear = confirm("⚠️ This will delete all saved summaries permanently. Continue?");
+  if (confirmClear) {
+    localStorage.removeItem(STORAGE_KEY);
+    SummaryArchive.showArchiveBrowser(); // Refresh UI
+    alert("🧹 Archive cleared!");
+  }
+}
 
   function showArchiveBrowser(containerId = "archivePanel") {
     const container = document.getElementById(containerId);
@@ -889,15 +898,6 @@ const SummaryArchive = (() => {
 
     container.appendChild(ul);
   }
-
-  function clearAll() {
-  const confirmClear = confirm("⚠️ This will delete all saved summaries permanently. Continue?");
-  if (confirmClear) {
-    localStorage.removeItem(STORAGE_KEY);
-    SummaryArchive.showArchiveBrowser(); // Refresh UI
-    alert("🧹 Archive cleared!");
-  }
-}
 
   return {
     saveToArchive,
