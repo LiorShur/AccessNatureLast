@@ -905,7 +905,8 @@ const SummaryArchive = (() => {
     viewSummary,
     deleteSummary,
     showArchiveBrowser,
-    clearAll    
+    clearAll,
+    toggleArchivePanel
   };
 })();
 
