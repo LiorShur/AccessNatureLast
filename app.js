@@ -1,17 +1,4 @@
-function initRecoveredRoute() {
-  path = routeData.filter(e => e.type === "location").map(e => e.coords);
-  if (path.length > 0) {
-    map.setCenter(path[0]);
-    new google.maps.Polyline({
-      path,
-      geodesic: true,
-      strokeColor: "#00FF00",
-      strokeOpacity: 1.0,
-      strokeWeight: 2,
-      map: map
-    });
-  }
-}
+
 
 // === GLOBAL VARIABLES ===
 let map, marker, watchId;
@@ -46,6 +33,20 @@ window.initMap = function (callback) {
 };
 let autoSaveInterval = null;
 
+function initRecoveredRoute() {
+  path = routeData.filter(e => e.type === "location").map(e => e.coords);
+  if (path.length > 0) {
+    map.setCenter(path[0]);
+    new google.maps.Polyline({
+      path,
+      geodesic: true,
+      strokeColor: "#00FF00",
+      strokeOpacity: 1.0,
+      strokeWeight: 2,
+      map: map
+    });
+  }
+}
 // function startAutoBackup() {
 //   autoSaveInterval = setInterval(() => {
 //     if (routeData.length > 0) {
@@ -986,7 +987,7 @@ async function exportRouteSummary() {
 //   alert("No location data found. Start a route and record some movement first!");
 //   return;
 // }
-
+console.log("📦 Attempting route export...");
   if (!routeData || !Array.isArray(routeData) || routeData.length === 0) {
     alert("⚠️ No route data available to export. Please track or load a route first.");
     console.warn("❌ Export aborted: routeData is missing or empty.");
