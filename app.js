@@ -1183,7 +1183,7 @@ try {
     console.error("❌ Export failed:", e);
     alert("❌ Failed to export route summary.");
   }
-}
+
   // ✅ Re-initialize the map if needed
 resetApp();
 initMap();
