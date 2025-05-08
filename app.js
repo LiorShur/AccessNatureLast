@@ -516,6 +516,13 @@ window.saveSession = function () {
 
   localStorage.setItem("sessions", JSON.stringify(sessions)); // ✅ Save sessions
 
+  console.log("💾 Saving session with data:", {
+  routeData,
+  totalDistance,
+  elapsedTime
+});
+
+
   localStorage.removeItem("route_backup"); // ✅ Clear any old backup after successful save!
 
   alert("✅ Route saved successfully!");
