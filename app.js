@@ -1048,7 +1048,11 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 
 var route = L.polyline(${JSON.stringify(pathCoords)}, { color: 'blue' }).addTo(map);
-map.fitBounds(route.getBounds());
+// map.fitBounds(route.getBounds());
+map.fitBounds(bounds);
+const listener = google.maps.event.addListenerOnce(map, "bounds_changed", function () {
+  if (map.getZoom() > 17) map.setZoom(17); // Limit zoom level
+});
 
 ${markersJS}
 
