@@ -1362,3 +1362,24 @@ function prepareAndExport() {
     exportRouteSummary(); // now routeData is populated
   });
 }
+
+function clearAllAppData() {
+  const confirmClear = confirm("⚠️ This will permanently delete all routes, summaries, and backups. Continue?");
+  if (!confirmClear) return;
+
+  localStorage.removeItem("sessions");
+  localStorage.removeItem("summary_archive");
+  localStorage.removeItem("route_backup");
+
+  if (document.getElementById("historyList")) {
+    document.getElementById("historyList").innerHTML = "";
+  }
+
+  if (typeof SummaryArchive !== "undefined") {
+    SummaryArchive.showArchiveBrowser(); // refresh if visible
+  }
+
+  loadSavedSessions();
+
+  alert("✅ All app data has been cleared!");
+}
