@@ -921,21 +921,218 @@ function clearAllSummaries() {
   };
 })();
 
+// async function exportRouteSummary() {
+
+// console.log("📦 Attempting route export...");
+//   if (!routeData || !Array.isArray(routeData) || routeData.length === 0) {
+//     alert("⚠️ No route data available to export. Please track or load a route first.");
+//     console.warn("❌ Export aborted: routeData is missing or empty.");
+//     return;
+//   }
+
+//   const hasLocation = routeData.some(entry => entry.type === "location");
+//   if (!hasLocation) {
+//     alert("⚠️ No location data found. Start a route and record some movement first!");
+//     console.warn("❌ Export aborted: No GPS points in routeData.");
+//     return;
+//   }
+//   const zip = new JSZip();
+//   const notesFolder = zip.folder("notes");
+//   const imagesFolder = zip.folder("images");
+//   const audioFolder = zip.folder("audio");
+
+//   let markersJS = "";
+//   let pathCoords = [];
+//   let noteCounter = 1;
+//   let photoCounter = 1;
+//   let audioCounter = 1;
+
+//   for (const entry of routeData) {
+//     if (entry.type === "location") {
+//       pathCoords.push([entry.coords.lat, entry.coords.lng]);
+//     } else if (entry.type === "text") {
+//       notesFolder.file(`note${noteCounter}.txt`, entry.content);
+//       markersJS += `
+// L.marker([${entry.coords.lat}, ${entry.coords.lng}])
+//   .addTo(map)
+//   .bindPopup("<b>Note ${noteCounter}</b><br>${entry.content}");
+// `;
+//       noteCounter++;
+//     } else if (entry.type === "photo") {
+//       const base64Data = entry.content.split(",")[1];
+//       imagesFolder.file(`photo${photoCounter}.jpg`, base64Data, { base64: true });
+//       markersJS += `
+// L.marker([${entry.coords.lat}, ${entry.coords.lng}])
+//   .addTo(map)
+//   .bindPopup("<b>Photo ${photoCounter}</b><br><img src='images/photo${photoCounter}.jpg' style='width:200px' onclick='showFullScreen(this)'>");
+// `;
+//       photoCounter++;
+//     } else if (entry.type === "audio") {
+//       const base64Data = entry.content.split(",")[1];
+//       audioFolder.file(`audio${audioCounter}.webm`, base64Data, { base64: true });
+//       markersJS += `
+// L.marker([${entry.coords.lat}, ${entry.coords.lng}])
+//   .addTo(map)
+//   .bindPopup("<b>Audio ${audioCounter}</b><br><audio controls src='audio/audio${audioCounter}.webm'></audio>");
+// `;
+//       audioCounter++;
+//     }
+//   }
+
+//   const htmlContent = `
+// <!DOCTYPE html>
+// <html lang="en">
+// <head>
+// <meta charset="UTF-8">
+// <title>${name}</title>
+// <meta name="viewport" content="width=device-width, initial-scale=1.0">
+// <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+// <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+// <style>
+//  <!-- // #map { height: 100vh; margin: 0; }
+//   // #summaryPanel {
+//   //   position: absolute; top: 10px; right: 10px;
+//   //   background: white; padding: 10px; border-radius: 8px;
+//   //   box-shadow: 0 0 10px rgba(0,0,0,0.3); font-size: 14px;
+//   // } -->
+//   body { margin: 0; font-family: Arial, sans-serif; }
+//     #map { height: 60vh; }
+//     #summaryPanel {
+//       padding: 20px;
+//       background: #f7f7f7;
+//     }
+//     #routeTitle {
+//       font-size: 24px;
+//       margin-bottom: 10px;
+//       color: #2c3e50;
+//     }
+//     .stats {
+//       margin-top: 10px;
+//     }
+//     .stats b {
+//       display: inline-block;
+//       width: 120px;
+//     }
+//     #description {
+//       margin-top: 20px;
+//     }
+//     #description textarea {
+//       width: 100%;
+//       height: 100px;
+//       font-size: 14px;
+//     }
+// </style>
+// </head>
+// <body>
+// <!--// <div id="map"></div>
+// // <div id="summaryPanel">
+// //   <b>Distance:</b> ${totalDistance.toFixed(2)} km<br>
+// //   <b>Photos:</b> ${photoCounter - 1}<br>
+// //   <b>Notes:</b> ${noteCounter - 1}<br>
+// //   <b>Audios:</b> ${audioCounter - 1}<br>
+// // </div> -->
+// <div id="summaryPanel">
+//     <div id="routeTitle">📍 ${name}</div>
+//     <div class="stats">
+//       <div><b>Distance:</b> ${totalDistance.toFixed(2)} km</div>
+//       <div><b>Time:</b> ${document.getElementById("timer").textContent}</div>
+//       <div><b>Photos:</b> ${photoCounter - 1}</div>
+//       <div><b>Notes:</b> ${noteCounter - 1}</div>
+//       <div><b>Audios:</b> ${audioCounter - 1}</div>
+//     </div>
+//     <div id="description">
+//       <h4>General Description:</h4>
+//       <textarea placeholder="Add notes or observations about the route here..."></textarea>
+//     </div>
+//   </div>
+
+//   <div id="map"></div>
+// <script>
+// var map = L.map('map').setView([${pathCoords[0][0]}, ${pathCoords[0][1]}], 15);
+// L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+//   maxZoom: 19,
+//   attribution: '&copy; OpenStreetMap contributors'
+// }).addTo(map);
+
+// var route = L.polyline(${JSON.stringify(pathCoords)}, { color: 'blue' }).addTo(map);
+// // map.fitBounds(route.getBounds());
+// map.fitBounds(bounds);
+// const listener = google.maps.event.addListenerOnce(map, "bounds_changed", function () {
+//   if (map.getZoom() > 17) map.setZoom(17); // Limit zoom level
+// });
+
+// ${markersJS}
+
+// // Fullscreen photo viewer
+// function showFullScreen(img) {
+//   var overlay = document.createElement("div");
+//   overlay.style.position = "fixed";
+//   overlay.style.top = 0;
+//   overlay.style.left = 0;
+//   overlay.style.width = "100%";
+//   overlay.style.height = "100%";
+//   overlay.style.background = "rgba(0,0,0,0.9)";
+//   overlay.style.display = "flex";
+//   overlay.style.alignItems = "center";
+//   overlay.style.justifyContent = "center";
+//   overlay.style.zIndex = "9999";
+//   overlay.onclick = () => document.body.removeChild(overlay);
+
+//   var fullImg = document.createElement("img");
+//   fullImg.src = img.src;
+//   fullImg.style.maxWidth = "90%";
+//   fullImg.style.maxHeight = "90%";
+//   overlay.appendChild(fullImg);
+//   document.body.appendChild(overlay);
+// }
+// </script>
+// </body>
+// </html>
+// `;
+//  // Save to archive (for in-browser stored summary)
+//   const mediaForArchive = {};
+
+//   routeData.forEach((entry, i) => {
+//     if (entry.type === "photo") {
+//       const base64 = entry.content.split(",")[1]; // remove data URI prefix
+//       mediaForArchive[`photo${i + 1}.jpg`] = base64;
+//     } else if (entry.type === "text") {
+//       mediaForArchive[`note${i + 1}.txt`] = entry.content;
+//     }
+//   });
+
+//   SummaryArchive.saveToArchive(name, htmlContent, mediaForArchive);
+//   zip.file("index.html", htmlContent);
+
+//   // const blob = await zip.generateAsync({ type: "blob" });
+//   // const url = URL.createObjectURL(blob);
+
+//   // const a = document.createElement("a");
+//   // a.href = url;
+//   // a.download = `route-summary-${Date.now()}.zip`;
+//   // a.click();
+// try {
+//     const blob = await zip.generateAsync({ type: "blob" });
+//     const url = URL.createObjectURL(blob);
+//     const a = document.createElement("a");
+//     a.href = url;
+//     a.download = `route-summary-${Date.now()}.zip`;
+//     a.click();
+
+//     console.log("✅ Route summary exported successfully.");
+//   } catch (e) {
+//     console.error("❌ Export failed:", e);
+//     alert("❌ Failed to export route summary.");
+//   }
+
+//   // ✅ Re-initialize the map if needed
+// resetApp();
+// initMap();
+// }
+
 async function exportRouteSummary() {
-//   console.log("🚨 exportRouteSummary called. routeData:", routeData);
+  console.log("📦 Attempting route export...");
 
-//   if (!routeData || routeData.length === 0) {
-//   alert("No route data available to export. Please start tracking first.");
-//   return;
-// }
-
-// let hasLocation = routeData.some(entry => entry.type === "location");
-
-// if (!hasLocation) {
-//   alert("No location data found. Start a route and record some movement first!");
-//   return;
-// }
-console.log("📦 Attempting route export...");
   if (!routeData || !Array.isArray(routeData) || routeData.length === 0) {
     alert("⚠️ No route data available to export. Please track or load a route first.");
     console.warn("❌ Export aborted: routeData is missing or empty.");
@@ -948,6 +1145,10 @@ console.log("📦 Attempting route export...");
     console.warn("❌ Export aborted: No GPS points in routeData.");
     return;
   }
+
+  const name = prompt("Enter a title for this route summary:");
+  if (!name) return;
+
   const zip = new JSZip();
   const notesFolder = zip.folder("notes");
   const imagesFolder = zip.folder("images");
@@ -967,7 +1168,7 @@ console.log("📦 Attempting route export...");
       markersJS += `
 L.marker([${entry.coords.lat}, ${entry.coords.lng}])
   .addTo(map)
-  .bindPopup("<b>Note ${noteCounter}</b><br>${entry.content}");
+  .bindPopup("<b>Note ${noteCounter}</b><br><pre>${entry.content}</pre>");
 `;
       noteCounter++;
     } else if (entry.type === "photo") {
@@ -976,7 +1177,10 @@ L.marker([${entry.coords.lat}, ${entry.coords.lng}])
       markersJS += `
 L.marker([${entry.coords.lat}, ${entry.coords.lng}])
   .addTo(map)
-  .bindPopup("<b>Photo ${photoCounter}</b><br><img src='images/photo${photoCounter}.jpg' style='width:200px' onclick='showFullScreen(this)'>");
+  .bindPopup(\`
+    <b>Photo ${photoCounter}</b><br>
+    <img src="images/photo${photoCounter}.jpg" style="width:200px;cursor:pointer" onclick="showFullScreen(this)">
+  \`);
 `;
       photoCounter++;
     } else if (entry.type === "audio") {
@@ -991,6 +1195,9 @@ L.marker([${entry.coords.lat}, ${entry.coords.lng}])
     }
   }
 
+  // ✅ Leaflet bounds fix
+  const boundsVar = JSON.stringify(pathCoords);
+
   const htmlContent = `
 <!DOCTYPE html>
 <html lang="en">
@@ -1001,77 +1208,62 @@ L.marker([${entry.coords.lat}, ${entry.coords.lng}])
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
 <style>
- <!-- // #map { height: 100vh; margin: 0; }
-  // #summaryPanel {
-  //   position: absolute; top: 10px; right: 10px;
-  //   background: white; padding: 10px; border-radius: 8px;
-  //   box-shadow: 0 0 10px rgba(0,0,0,0.3); font-size: 14px;
-  // } -->
   body { margin: 0; font-family: Arial, sans-serif; }
-    #map { height: 60vh; }
-    #summaryPanel {
-      padding: 20px;
-      background: #f7f7f7;
-    }
-    #routeTitle {
-      font-size: 24px;
-      margin-bottom: 10px;
-      color: #2c3e50;
-    }
-    .stats {
-      margin-top: 10px;
-    }
-    .stats b {
-      display: inline-block;
-      width: 120px;
-    }
-    #description {
-      margin-top: 20px;
-    }
-    #description textarea {
-      width: 100%;
-      height: 100px;
-      font-size: 14px;
-    }
+  #map { height: 60vh; }
+  #summaryPanel {
+    padding: 20px;
+    background: #f7f7f7;
+  }
+  #routeTitle {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #2c3e50;
+  }
+  .stats {
+    margin-top: 10px;
+  }
+  .stats b {
+    display: inline-block;
+    width: 120px;
+  }
+  #description {
+    margin-top: 20px;
+  }
+  #description textarea {
+    width: 100%;
+    height: 100px;
+    font-size: 14px;
+  }
 </style>
 </head>
 <body>
-<!--// <div id="map"></div>
-// <div id="summaryPanel">
-//   <b>Distance:</b> ${totalDistance.toFixed(2)} km<br>
-//   <b>Photos:</b> ${photoCounter - 1}<br>
-//   <b>Notes:</b> ${noteCounter - 1}<br>
-//   <b>Audios:</b> ${audioCounter - 1}<br>
-// </div> -->
 <div id="summaryPanel">
-    <div id="routeTitle">📍 ${name}</div>
-    <div class="stats">
-      <div><b>Distance:</b> ${totalDistance.toFixed(2)} km</div>
-      <div><b>Time:</b> ${document.getElementById("timer").textContent}</div>
-      <div><b>Photos:</b> ${photoCounter - 1}</div>
-      <div><b>Notes:</b> ${noteCounter - 1}</div>
-      <div><b>Audios:</b> ${audioCounter - 1}</div>
-    </div>
-    <div id="description">
-      <h4>General Description:</h4>
-      <textarea placeholder="Add notes or observations about the route here..."></textarea>
-    </div>
+  <div id="routeTitle">📍 ${name}</div>
+  <div class="stats">
+    <div><b>Distance:</b> ${totalDistance.toFixed(2)} km</div>
+    <div><b>Time:</b> ${document.getElementById("timer").textContent}</div>
+    <div><b>Photos:</b> ${photoCounter - 1}</div>
+    <div><b>Notes:</b> ${noteCounter - 1}</div>
+    <div><b>Audios:</b> ${audioCounter - 1}</div>
   </div>
+  <div id="description">
+    <h4>General Description:</h4>
+    <textarea placeholder="Add notes or observations about the route here..."></textarea>
+  </div>
+</div>
 
-  <div id="map"></div>
+<div id="map"></div>
 <script>
-var map = L.map('map').setView([${pathCoords[0][0]}, ${pathCoords[0][1]}], 15);
+var map = L.map('map');
+var bounds = L.latLngBounds(${boundsVar});
+map.fitBounds(bounds);
+
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  maxZoom: 19,
+  maxZoom: 18,
   attribution: '&copy; OpenStreetMap contributors'
 }).addTo(map);
 
-var route = L.polyline(${JSON.stringify(pathCoords)}, { color: 'blue' }).addTo(map);
-// map.fitBounds(route.getBounds());
-map.fitBounds(bounds);
-const listener = google.maps.event.addListenerOnce(map, "bounds_changed", function () {
-  if (map.getZoom() > 17) map.setZoom(17); // Limit zoom level
-});
+var route = L.polyline(${boundsVar}, { color: 'blue' }).addTo(map);
 
 ${markersJS}
 
@@ -1101,12 +1293,12 @@ function showFullScreen(img) {
 </body>
 </html>
 `;
- // Save to archive (for in-browser stored summary)
-  const mediaForArchive = {};
 
+  // Store media for internal archive (optional)
+  const mediaForArchive = {};
   routeData.forEach((entry, i) => {
     if (entry.type === "photo") {
-      const base64 = entry.content.split(",")[1]; // remove data URI prefix
+      const base64 = entry.content.split(",")[1];
       mediaForArchive[`photo${i + 1}.jpg`] = base64;
     } else if (entry.type === "text") {
       mediaForArchive[`note${i + 1}.txt`] = entry.content;
@@ -1116,14 +1308,7 @@ function showFullScreen(img) {
   SummaryArchive.saveToArchive(name, htmlContent, mediaForArchive);
   zip.file("index.html", htmlContent);
 
-  // const blob = await zip.generateAsync({ type: "blob" });
-  // const url = URL.createObjectURL(blob);
-
-  // const a = document.createElement("a");
-  // a.href = url;
-  // a.download = `route-summary-${Date.now()}.zip`;
-  // a.click();
-try {
+  try {
     const blob = await zip.generateAsync({ type: "blob" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -1137,10 +1322,10 @@ try {
     alert("❌ Failed to export route summary.");
   }
 
-  // ✅ Re-initialize the map if needed
-resetApp();
-initMap();
+  resetApp();
+  initMap();
 }
+
 
 async function exportAllRoutes() {
   const sessions = JSON.parse(localStorage.getItem("sessions") || "[]");
