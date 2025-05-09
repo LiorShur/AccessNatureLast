@@ -1,5 +1,3 @@
-
-
 // === GLOBAL VARIABLES ===
 let map, marker, watchId;
 let path = [];
