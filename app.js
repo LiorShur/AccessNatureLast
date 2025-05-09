@@ -505,18 +505,30 @@ window.saveSession = function () {
     data: routeData
   };
 
-  let sessions = JSON.parse(localStorage.getItem("sessions") || "[]");
-  sessions.push(session);
+  // let sessions = JSON.parse(localStorage.getItem("sessions") || "[]");
+  // sessions.push(session);
 
+  // try {
+  //   localStorage.setItem("sessions", JSON.stringify(sessions));
+  //   localStorage.removeItem("route_backup");
+  //   console.log("✅ Session saved to localStorage.", session);
+  //   alert("✅ Route saved successfully!");
+  //   loadSavedSessions();
+  // } catch (e) {
+  //   console.error("❌ Failed to save session:", e);
+  //   alert("❌ Could not save the route. Storage may be full.");
+  // }
   try {
+    let sessions = JSON.parse(localStorage.getItem("sessions") || "[]");
+    sessions.push(session);
     localStorage.setItem("sessions", JSON.stringify(sessions));
     localStorage.removeItem("route_backup");
-    console.log("✅ Session saved to localStorage.", session);
+
     alert("✅ Route saved successfully!");
     loadSavedSessions();
   } catch (e) {
-    console.error("❌ Failed to save session:", e);
-    alert("❌ Could not save the route. Storage may be full.");
+    console.error("❌ Save failed. Storage full or data too large.", e);
+    alert("❌ Could not save the route. Storage may be full. Try exporting and clearing older data.");
   }
 };
 
