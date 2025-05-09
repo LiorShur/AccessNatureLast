@@ -175,7 +175,7 @@ function resetApp() {
   if (map && marker) {
     marker.setPosition({ lat: 0, lng: 0 });
     map.setCenter({ lat: 0, lng: 0 });
-    map.setZoom(15);
+    map.setZoom(17);
   }
 
   stopAutoBackup();
