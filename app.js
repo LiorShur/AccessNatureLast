@@ -942,6 +942,15 @@ const SummaryArchive = (() => {
     toggleArchivePanel();
   }
 }
+  
+function clearAllSummaries() {
+  const confirmClear = confirm("⚠️ Clear all archived summaries? This cannot be undone!");
+  if (confirmClear) {
+    localStorage.removeItem("summary_archive");
+    alert("✅ All archived summaries cleared!");
+    SummaryArchive.showArchiveBrowser(); // Refresh panel if visible
+  }
+}
 
   function showArchiveBrowser(containerId = "archivePanel") {
     const container = document.getElementById(containerId);
