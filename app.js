@@ -26,7 +26,22 @@ window.initMap = function (callback) {
     map,
     title: "Start"
   });
-
+// Try to get user location
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        const userLocation = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+        map.setCenter(userLocation);
+        marker.setPosition(userLocation);
+      },
+      error => {
+        console.warn("Geolocation failed or denied, using default.");
+      }
+    );
+  }
   if (callback) callback();
 };
 let autoSaveInterval = null;
