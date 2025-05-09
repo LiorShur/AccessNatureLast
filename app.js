@@ -47,11 +47,11 @@ function initRecoveredRoute() {
     });
   }
 }
-const script = document.createElement('script');
-script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyB4IoUFBPNGtVySKpFoqE9VITvGV7nkLHw&callback=initMap';
-script.async = true;
-script.defer = true;
-document.head.appendChild(script);
+// const script = document.createElement('script');
+// script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyB4IoUFBPNGtVySKpFoqE9VITvGV7nkLHw&callback=initMap';
+// script.async = true;
+// script.defer = true;
+// document.head.appendChild(script);
 
 // function startAutoBackup() {
 //   autoSaveInterval = setInterval(() => {
