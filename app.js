@@ -53,14 +53,7 @@ function initRecoveredRoute() {
 // script.defer = true;
 // document.head.appendChild(script);
 
-// function startAutoBackup() {
-//   autoSaveInterval = setInterval(() => {
-//     if (routeData.length > 0) {
-//       localStorage.setItem("route_backup", JSON.stringify(routeData));
-//       console.log("🔄 Auto-saved route progress.");
-//     }
-//   }, 20000); // 20 seconds
-// }
+
 function startAutoBackup() {
   autoSaveInterval = setInterval(() => {
     const backupData = {
@@ -141,14 +134,7 @@ window.startTracking = function () {
   }
 };
 
-// window.stopTracking = function () {
-//   stopAutoBackup(); // stop and clean backup
 
-//   if (watchId) navigator.geolocation.clearWatch(watchId);
-//   stopTimer();
-//   Summary();
-//   resetApp(); // reset after ing summary
-// };
 window.stopTracking = function () {
   if (watchId) navigator.geolocation.clearWatch(watchId);
   stopTimer();
@@ -200,11 +186,7 @@ function resetApp() {
   console.log("🧹 App reset — ready for a new session!");
 }
 
-// === TIMER ===
-// function startTimer() {
-//   startTime = Date.now() - elapsedTime;
-//   timerInterval = setInterval(updateTimerDisplay, 1000);
-// }
+
 function startTimer() {
   elapsedTime = 0; // important
   startTime = Date.now();
@@ -295,6 +277,28 @@ window.startAudioRecording = function () {
     .catch(() => alert("Microphone access denied"));
 };
 
+function compressImage(file, quality, callback) {
+  const img = new Image();
+  const reader = new FileReader();
+
+  reader.onload = () => {
+    img.src = reader.result;
+  };
+  img.onload = () => {
+    const canvas = document.createElement("canvas");
+    const maxWidth = 800;
+    const scale = Math.min(1, maxWidth / img.width);
+    canvas.width = img.width * scale;
+    canvas.height = img.height * scale;
+
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    callback(canvas.toDataURL("image/jpeg", quality));
+  };
+
+  reader.readAsDataURL(file);
+}
+
 // === MEDIA INPUT EVENTS ===
 window.addEventListener("DOMContentLoaded", () => {
   document.getElementById("photoInput").addEventListener("change", e => {
@@ -312,7 +316,19 @@ window.addEventListener("DOMContentLoaded", () => {
           alert("Photo saved.");
         });
       };
-      reader.readAsDataURL(file);
+      // reader.readAsDataURL(file);
+      compressImage(file, 0.7, base64 => {
+  navigator.geolocation.getCurrentPosition(pos => {
+    routeData.push({
+      type: "photo",
+      timestamp: Date.now(),
+      coords: { lat: pos.coords.latitude, lng: pos.coords.longitude },
+      content: base64
+    });
+    alert("📷 Compressed photo saved.");
+  });
+});
+
     }
   });
 
@@ -464,36 +480,7 @@ window.addEventListener("beforeunload", function (e) {
   }
 });
 
-// window.saveSession = function () {
-//   const name = prompt("Enter a name for this route:");
-//   if (!name) return;
 
-//   const session = {
-//     name,
-//     date: new Date().toISOString(),
-//     time: document.getElementById("timer").textContent,
-//     distance: totalDistance.toFixed(2),
-//     data: routeData
-//   };
-
-//   let sessions = JSON.parse(localStorage.getItem("sessions") || "[]");
-//   sessions.push(session);
-
-//   localStorage.setItem("sessions", JSON.stringify(sessions)); // ✅ Save sessions
-
-//   console.log("💾 Saving session with data:", {
-//   routeData,
-//   totalDistance,
-//   elapsedTime
-// });
-
-
-//   localStorage.removeItem("route_backup"); // ✅ Clear any old backup after successful save!
-
-//   alert("✅ Route saved successfully!");
-
-//   loadSavedSessions(); // Refresh saved sessions list
-// };
 
 window.saveSession = function () {
   console.log("🔍 Attempting to save session...");
@@ -551,27 +538,7 @@ window.loadSavedSessions = function () {
 };
 
 // === LOAD A SESSION ===
-// window.loadSession = function (index) {
-//   const sessions = JSON.parse(localStorage.getItem("sessions") || "[]");
-//   const session = sessions[index];
 
-//   routeData = session.data;
-//   totalDistance = parseFloat(session.distance);
-//   document.getElementById("timer").textContent = session.time;
-//   document.getElementById("distance").textContent = totalDistance.toFixed(2) + " km";
-
-//   path = [];
-//   routeData.forEach(entry => {
-//     if (entry.type === "location") {
-//       path.push(entry.coords);
-//     }
-//   });
-
-//   window.initMap(() => {
-//     drawSavedRoutePath();
-//     showRouteDataOnMap();
-//   });
-// };
 window.loadSession = function (index) {
   const sessions = JSON.parse(localStorage.getItem("sessions") || "[]");
   const session = sessions[index];
@@ -742,70 +709,7 @@ window.generateShareableLink = function () {
 };
 
 // === ON LOAD SHARED LINK HANDLER ===
-// window.onload = function () {
-//   const params = new URLSearchParams(window.location.search);
-//   const base64Data = params.get("data");
 
-//   if (base64Data) {
-//     // Shared Link load
-//     try {
-//       const json = atob(base64Data);
-//       const sharedData = JSON.parse(json);
-//       routeData = sharedData;
-//       alert("Shared route loaded!");
-
-//       path = routeData.filter(e => e.type === "location").map(e => e.coords);
-//       initMap(() => {
-//         drawSavedRoutePath();
-//         showRouteDataOnMap();
-//       });
-//     } catch (e) {
-//       console.error("Invalid share data.");
-//     }
-//   } else {
-//     // Local backup recovery
-//     const backup = localStorage.getItem("route_backup");
-//     if (backup) {
-//       const restore = confirm("🛠️ Unsaved route found! Would you like to restore it?");
-//       if (restore) {
-//         try {
-//           const backupData = JSON.parse(backup);
-
-//           routeData = backupData.routeData || [];
-//           totalDistance = backupData.totalDistance || 0;
-//           elapsedTime = backupData.elapsedTime || 0;
-
-//           path = routeData.filter(e => e.type === "location").map(e => e.coords);
-
-//           initMap(() => {
-//             drawSavedRoutePath();
-//             showRouteDataOnMap();
-//           });
-
-//           document.getElementById("distance").textContent = totalDistance.toFixed(2) + " km";
-//           document.getElementById("liveDistance").textContent = totalDistance.toFixed(2) + " km";
-
-//           startTime = Date.now() - elapsedTime;
-//           updateTimerDisplay();
-//           startTimer();
-//           startAutoBackup();
-
-//           alert("✅ Route recovered successfully!");
-
-//         } catch (e) {
-//           console.error("Backup data corrupt:", e);
-//           resetApp();
-//           localStorage.removeItem("route_backup");
-//         }
-//       } else {
-//         localStorage.removeItem("route_backup");
-//         resetApp();
-//       }
-//     } else {
-//       loadSavedSessions();
-//     }
-//   }
-// };
 window.onload = function () {
   const params = new URLSearchParams(window.location.search);
   const base64Data = params.get("data");
