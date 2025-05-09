@@ -16,7 +16,7 @@ window.initMap = function (callback) {
   const initial = path.length > 0 ? path[0] : { lat: 0, lng: 0 };
 
   map = new google.maps.Map(document.getElementById("map"), {
-    zoom: 15,
+    zoom: 17,
     center: initial,
     mapTypeId: 'terrain'
   });
@@ -426,7 +426,7 @@ function showRouteDataOnMap() {
   if (!bounds.isEmpty()) {
   map.fitBounds(bounds);
 } else {
-  map.setZoom(15);
+  map.setZoom(17);
 }
 
 }
