@@ -788,8 +788,12 @@ window.onload = function () {
     } else {
       console.log("ℹ️ No backup found. Loading saved sessions.");
       loadSavedSessions();
+      if (!map) initMap(); // ✅ This is where you add the fallback map init
     }
   }
+  if (!map) {
+  initMap(); // Ensure the map initializes even if no session or shared route is loaded
+}
 };
 
 // === SUMMARY ARCHIVE MODULE ===
